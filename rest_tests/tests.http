@@ -1,0 +1,76 @@
+@base-url = http://localhost:8080
+@hello = {{base-url}}/hello
+@medics = {{base-url}}/medics
+@auth = {{base-url}}/auth
+
+@token = eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJhZG1pbiIsInJvbGUiOiJST0xFX0FETUlOIiwiaXNzIjoiQVBJIFZvbGwubWVkIiwiZXhwIjoxNjg2NjkyNDcwfQ.tLD_we2OeI1cnd7tKh64wGvlbtyo-i3dmaPehO85r7Q
+
+###
+POST {{auth}} HTTP/1.1
+Content-Type: application/json
+
+# {
+#     "login":"new_user",
+#     "password":"123"
+# }
+
+{
+    "login":"admin",
+    "password":"root"
+}
+
+###
+GET {{hello}} HTTP/1.1
+Authorization: Bearer {{token}}
+
+###
+GET {{medics}} HTTP/1.1
+Authorization: Bearer {{token}}
+
+###
+GET {{medics}}/1
+Authorization: Bearer {{token}}
+
+###
+DELETE {{medics}}/4
+Authorization: Bearer {{token}}
+
+###
+POST {{medics}} HTTP/1.1
+Content-Type: application/json
+Authorization: Bearer {{token}}
+
+{
+    "name": "Dr. Silva",
+    "telephone": "28414192",
+    "register": "35253",
+    "email":"doctor5@email.com",
+    "field": "ORTHOPEDICS",
+    "address": {
+        "street": "Main street",
+        "zip": "01247641",
+        "city": "Metropolis",
+        "state": "AB",
+        "number": "123"
+    }
+}
+
+###
+PUT {{medics}}
+Content-Type: application/json
+
+{
+    "id": 7,
+    "name": "Dr. Silva",
+    "email": "silva23@hotmail.com",
+    "telephone": "28414192",
+    "register": "2349",
+    "field": "ORTHOPEDICS",
+    "address": {
+        "street": "Rua da mata novo end",
+        "zip": "01247641",
+        "city": "Vilopolis",
+        "state": "AB",
+        "number":"123"
+    }
+}

@@ -1,0 +1,1 @@
+insert into users values(1,"admin","$2a$12$i1DdixJGwc0Vk/GZ/Z/K8uGODb62udHdxo9kk155952G3hdGGaEtm");
