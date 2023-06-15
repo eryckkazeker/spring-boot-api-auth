@@ -2,22 +2,46 @@
 @hello = {{base-url}}/hello
 @medics = {{base-url}}/medics
 @auth = {{base-url}}/auth
+@users = {{base-url}}/users
 
-@token = eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJhZG1pbiIsInJvbGUiOiJST0xFX0FETUlOIiwiaXNzIjoiQVBJIFZvbGwubWVkIiwiZXhwIjoxNjg2NjkyNDcwfQ.tLD_we2OeI1cnd7tKh64wGvlbtyo-i3dmaPehO85r7Q
+@token = <token>
 
 ###
 POST {{auth}} HTTP/1.1
 Content-Type: application/json
+
+{
+    "login":"admin",
+    "password":"root"
+}
 
 # {
 #     "login":"new_user",
 #     "password":"123"
 # }
 
+###
+POST {{users}} HTTP/1.1
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
 {
-    "login":"admin",
-    "password":"root"
+    "login":"another_user",
+    "password":"123",
+    "profile":"ROLE_ADMIN"
 }
+
+###
+GET {{users}} HTTP/1.1
+Authorization: Bearer {{token}}
+
+###
+GET {{users}}/3 HTTP/1.1
+Authorization: Bearer {{token}}
+
+###
+DELETE  {{users}}/2 HTTP/1.1
+Authorization: Bearer {{token}}
 
 ###
 GET {{hello}} HTTP/1.1

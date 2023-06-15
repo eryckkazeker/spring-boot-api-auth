@@ -14,6 +14,8 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
+import med.voll.api.domain.user.UserProfileEnum;
+
 @Configuration
 @EnableWebSecurity
 public class SecurityConfigurations {
@@ -32,9 +34,9 @@ public class SecurityConfigurations {
             .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
             .and().authorizeHttpRequests()
             .requestMatchers(HttpMethod.POST, "/auth").permitAll()
-            .requestMatchers(HttpMethod.POST, "/medics").hasRole("ADMIN")
-            .requestMatchers(HttpMethod.DELETE, "/medics/*").hasRole("ADMIN")
-            .requestMatchers(HttpMethod.DELETE, "/patients/*").hasRole("ADMIN")
+            .requestMatchers(HttpMethod.POST, "/medics").hasRole(UserProfileEnum.ROLE_ADMIN.value)
+            .requestMatchers(HttpMethod.DELETE, "/medics/*").hasRole(UserProfileEnum.ROLE_ADMIN.value)
+            .requestMatchers(HttpMethod.DELETE, "/patients/*").hasRole(UserProfileEnum.ROLE_ADMIN.value)
             .anyRequest().authenticated()
             .and().addFilterBefore(securityFilter, UsernamePasswordAuthenticationFilter.class)
             .build();
