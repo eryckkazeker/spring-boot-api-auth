@@ -3,10 +3,13 @@ package med.voll.api.infra.security;
 import java.io.IOException;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
+
+import com.auth0.jwt.exceptions.TokenExpiredException;
 
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
@@ -30,12 +33,18 @@ public class SecurityFilter extends OncePerRequestFilter {
         var token = getTokenFromRequest(request);
 
         if (token != null) {
-            var sub = tokenService.getSubject(token);
-            var user = userRepository.findByLogin(sub);
-
-            var authentication = new UsernamePasswordAuthenticationToken(user, null, user.getAuthorities());
-            
-            SecurityContextHolder.getContext().setAuthentication(authentication);
+            try {
+                var sub = tokenService.getSubject(token);
+                var user = userRepository.findByLogin(sub);
+    
+                var authentication = new UsernamePasswordAuthenticationToken(user, null, user.getAuthorities());
+                
+                SecurityContextHolder.getContext().setAuthentication(authentication);
+            } catch (TokenExpiredException e) {
+                response.getWriter().write(e.getMessage());
+                response.setStatus(HttpStatus.UNAUTHORIZED.value());
+                return;
+            }
         }
                 
         filterChain.doFilter(request, response);

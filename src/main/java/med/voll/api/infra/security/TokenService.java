@@ -26,7 +26,7 @@ public class TokenService {
                 .withIssuer("API Voll.med")
                 .withSubject(user.getLogin())
                 .withExpiresAt(Instant.now().plus(10, ChronoUnit.MINUTES))
-                .withClaim("role", user.getProfile())
+                .withClaim("role", user.getProfile().toString())
                 .sign(algorithm);
         } catch (JWTCreationException exception){
             throw new RuntimeException("Error generating JWT", exception);
