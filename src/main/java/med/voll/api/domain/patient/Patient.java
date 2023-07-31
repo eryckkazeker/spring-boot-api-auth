@@ -54,4 +54,8 @@ public class Patient {
     public void remove() {
         this.active = false;
     }
+
+    public Patient(Long patientId) {
+        this.id = patientId;
+    }
 }

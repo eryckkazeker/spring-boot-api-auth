@@ -59,4 +59,8 @@ public class Medic {
     public void delete() {
         this.active = false;
     }
+
+    public Medic(Long medicId) {
+        this.id = medicId;
+    }
 }
