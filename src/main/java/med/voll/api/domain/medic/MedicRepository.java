@@ -6,4 +6,6 @@ import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface MedicRepository extends JpaRepository<Medic, Long> {
     Page<Medic> findAllByActiveTrue(Pageable pages);
+
+    boolean existsByIdAndActiveTrue(Long id);
 }

@@ -1,8 +1,10 @@
 @base-url = http://localhost:8080
 @hello = {{base-url}}/hello
 @medics = {{base-url}}/medics
+@patients = {{base-url}}/patients
 @auth = {{base-url}}/auth
 @users = {{base-url}}/users
+@appointments = {{base-url}}/appointments
 
 @token = <token>
 
@@ -98,3 +100,49 @@ Content-Type: application/json
         "number":"123"
     }
 }
+
+###
+GET {{appointments}} HTTP/1.1
+Authorization: Bearer {{token}}
+###
+
+GET {{appointments}}/1 HTTP/1.1
+Authorization: Bearer {{token}}
+###
+
+POST {{appointments}} HTTP/1.1
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+    "medicId":1,
+    "patientId":1,
+    "date":"2023-08-16T10:22:11"
+}
+
+###
+GET {{patients}} HTTP/1.1
+Authorization: Bearer {{token}}
+
+###
+POST {{patients}} HTTP/1.1
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+    "name": "Patient 2",
+    "email": "patient2@email.com",
+    "telephone":"29323421",
+    "ssn":"47132047013",
+    "address": {
+        "street":"Street 2",
+        "zip":"60139457",
+        "city":"Metropolie",
+        "state":"CC",
+        "number":"123"
+    }
+}
+
+###
+DELETE {{patients}}/2 HTTP/1.1
+Authorization: Bearer {{token}}

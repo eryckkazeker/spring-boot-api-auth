@@ -1,5 +1,6 @@
 package med.voll.api.infra.exception;
 
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.converter.HttpMessageNotReadableException;
@@ -35,6 +36,16 @@ public class ErrorHandler {
     public ResponseEntity<Object> handle400Error(HttpMessageNotReadableException e) {
         var message = e.getMessage();
         return ResponseEntity.badRequest().body(message);
+    }
+
+    @ExceptionHandler(DataIntegrityViolationException.class)
+    public ResponseEntity<Object> handle400Error(DataIntegrityViolationException exception) {
+        return ResponseEntity.badRequest().body(exception.getMessage());
+    }
+
+    @ExceptionHandler(BadRequestException.class)
+    public ResponseEntity<Object> handle400Error(BadRequestException exception) {
+        return ResponseEntity.badRequest().body(exception.getMessage());
     }
 
     private record BadRequestErrorBody(String field, String message) {
