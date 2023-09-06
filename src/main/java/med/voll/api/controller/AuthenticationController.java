@@ -1,6 +1,5 @@
 package med.voll.api.controller;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -19,14 +18,17 @@ import med.voll.api.infra.security.TokenService;
 @RequestMapping("/auth")
 public class AuthenticationController {
 
-    @Autowired
-    private AuthenticationManager authenticationManager;
+    private final AuthenticationManager authenticationManager;
 
-    @Autowired
-    private TokenService tokenService;
+    private final TokenService tokenService;
+
+    public AuthenticationController(AuthenticationManager authenticationManager, TokenService tokenService) {
+        this.authenticationManager = authenticationManager;
+        this.tokenService = tokenService;
+    }
 
     @PostMapping
-    public ResponseEntity<Object> authenticate(@RequestBody @Valid AuthenticationData authData) {
+    public ResponseEntity<TokenData> authenticate(@RequestBody @Valid AuthenticationData authData) {
         var token = new UsernamePasswordAuthenticationToken(authData.login(), authData.password());
         var authentication = authenticationManager.authenticate(token);
         String jwt = tokenService.generateToken((User)authentication.getPrincipal());

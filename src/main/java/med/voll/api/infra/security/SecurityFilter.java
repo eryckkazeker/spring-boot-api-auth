@@ -15,7 +15,7 @@ import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import med.voll.api.domain.user.UserRepository;
+import med.voll.api.domain.persistence.repository.UserRepository;
 
 @Component
 public class SecurityFilter extends OncePerRequestFilter {
@@ -45,6 +45,9 @@ public class SecurityFilter extends OncePerRequestFilter {
                 response.setStatus(HttpStatus.UNAUTHORIZED.value());
                 return;
             }
+        } else {
+            response.setStatus(HttpStatus.UNAUTHORIZED.value());
+            return;
         }
                 
         filterChain.doFilter(request, response);

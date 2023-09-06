@@ -2,7 +2,6 @@ package med.voll.api.domain.patient;
 
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
-import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import med.voll.api.domain.address.Address;
@@ -12,7 +11,6 @@ import med.voll.api.domain.address.Address;
 @Getter
 @NoArgsConstructor
 @AllArgsConstructor
-@EqualsAndHashCode(of = "id")
 public class Patient {
 
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)

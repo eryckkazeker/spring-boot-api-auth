@@ -1,6 +1,5 @@
 package med.voll.api.controller;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
@@ -17,26 +16,29 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.util.UriComponentsBuilder;
 
 import jakarta.validation.Valid;
+import med.voll.api.domain.persistence.repository.UserRepository;
 import med.voll.api.domain.user.User;
 import med.voll.api.domain.user.UserDetailsDto;
 import med.voll.api.domain.user.UserInsertDto;
 import med.voll.api.domain.user.UserListDto;
-import med.voll.api.domain.user.UserRepository;
 
 @RestController
 @RequestMapping("/users")
 @Secured("ROLE_ADMIN")
 public class UserController {
 
-    @Autowired
-    private UserRepository userRepository;
+    private final UserRepository userRepository;
+
+    public UserController(UserRepository userRepository) {
+        this.userRepository = userRepository;
+    }
 
     @PostMapping
     @Transactional
     public ResponseEntity<UserDetailsDto> insertUser(@RequestBody @Valid UserInsertDto user, UriComponentsBuilder uriComponentsBuilder) {
         var createdUser = userRepository.save(new User(user));
 
-        var uri = uriComponentsBuilder.path("/medicos/{id}").buildAndExpand(createdUser.getId()).toUri();
+        var uri = uriComponentsBuilder.path("/users/{id}").buildAndExpand(createdUser.getId()).toUri();
 
         return ResponseEntity.created(uri).body(new UserDetailsDto(createdUser));
     }
