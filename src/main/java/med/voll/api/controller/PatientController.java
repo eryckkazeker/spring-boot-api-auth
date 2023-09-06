@@ -2,8 +2,8 @@ package med.voll.api.controller;
 
 import jakarta.validation.Valid;
 import med.voll.api.domain.patient.*;
+import med.voll.api.domain.persistence.repository.PatientRepository;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
@@ -16,15 +16,18 @@ import org.springframework.web.util.UriComponentsBuilder;
 @RequestMapping("patients")
 public class PatientController {
 
-    @Autowired
-    private PatientRepository repository;
+    private final PatientRepository repository;
+
+    public PatientController(PatientRepository repository) {
+        this.repository = repository;
+    }
 
     @PostMapping
     @Transactional
     public ResponseEntity<PatientDetailsDto> insert(@RequestBody @Valid PatientInsertDto dados, UriComponentsBuilder uriComponentsBuilder) {
         var paciente = repository.save(new Patient(dados));
 
-        var uri = uriComponentsBuilder.path("/pacientes/{id}").buildAndExpand(paciente.getId()).toUri();
+        var uri = uriComponentsBuilder.path("/patients/{id}").buildAndExpand(paciente.getId()).toUri();
         return ResponseEntity.created(uri).body(new PatientDetailsDto(paciente));
     }
 
